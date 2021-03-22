@@ -32,8 +32,8 @@ public class TextConverter2 extends JFrame implements ActionListener {
     private JButton cancelBtn;
     private JTextArea textIn;
     private JTextArea textOut;
-    private final String CLIENT_ID = "hXy_mcjHOognVTVvKMBN";
-    private final String CLIENT_SECRET = "FmxO7h0xxZ";
+    private final String CLIENT_ID = "";
+    private final String CLIENT_SECRET = "";
     
     // String 형 문자 하나하나 프린틓 하는 법 -> s.charAt(i);
     // int idx = s.indexOf("백두산") - > 백두산이 시작되는 인덱스 번호
