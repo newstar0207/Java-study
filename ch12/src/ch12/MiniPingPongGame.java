@@ -24,7 +24,7 @@ public class MiniPingPongGame extends JPanel implements KeyListener {
       this.setBackground(Color.black);
       racquet1 = new Racquet(this, 0, 150, Color.blue, 1);
       racquet2 = new Racquet(this, 570, 150, Color.yellow, 2);
-      score = new Score(600, 400);
+      score = new Score(this, 600, 400);
       this.setFocusable(true);
       this.addKeyListener(this);
 
@@ -33,7 +33,7 @@ public class MiniPingPongGame extends JPanel implements KeyListener {
    @Override
    public void paint(Graphics g) {
       super.paint(g);
-      score.draw(g, player1Score, player2Score);
+      score.draw(g);
       Graphics2D g2D = (Graphics2D) g;
       ball.draw(g2D);
       racquet1.draw(g2D);
@@ -105,20 +105,24 @@ class Ball {
    public void move() {
       if (x + xSpeed < 0) {
          xSpeed = 1;
-         game.player1Score++;
-         System.out.println(game.player1Score + " player1");
+         ySpeed = ySpeed > 0 ? ySpeed = 1 : ySpeed -1;
+         game.player2Score++;
       }
       if (x + xSpeed > game.getWidth() - 2 * RADIUS) { // ø¯¿« ¡ˆ∏ß ∏∏≈≠ æ»ø° ¿÷¥¬∞°
          xSpeed = -1;
-         game.player2Score++;
-         System.out.println(game.player2Score + " player1");
+         ySpeed = ySpeed > 0 ? ySpeed = 1 : ySpeed -1;
+         game.player1Score++;
       }
       if (y + ySpeed < 0)
-         ySpeed = 1;
+         ySpeed *= -1;
       if (y + ySpeed > game.getHeight() - 2 * RADIUS)
-         ySpeed = -1;
-      if (collision()) // ∂Ûƒœø° ∫Œµ˙«˚¿ª∂ß ¡¬øÏ∏¶ πŸ≤„¡‹ (x¿«)
+         ySpeed *= -1;
+      if (collision()) { // ∂Ûƒœø° ∫Œµ˙«˚¿ª∂ß ¡¬øÏ∏¶ πŸ≤„¡‹ (x¿«)
          xSpeed = -xSpeed;
+         xSpeed = xSpeed > 0 ? xSpeed + 1 : xSpeed - 1;
+         ySpeed = ySpeed > 0 ? ySpeed + 1 : ySpeed - 1;
+      }   
+      		
       x += xSpeed;
       y += ySpeed;
 
@@ -195,24 +199,23 @@ class Racquet {
 class Score {
    private static int GAME_WIDTH;
    private static int GAME_HEIGHT;
-   private int score1 , score2;
-
-   public Score(int gameWidth, int gameHeight) {
+   private MiniPingPongGame game;
+   
+   public Score(MiniPingPongGame game, int gameWidth, int gameHeight) {
+	  this.game = game;
       GAME_WIDTH = gameWidth;
       GAME_HEIGHT = gameHeight;
    }
 
-   public void draw(Graphics g, int player1Score , int player2Score) {
-      score1 = player1Score;
-      score2 = player2Score;
+   public void draw(Graphics g) {
       g.setColor(Color.white);
       g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 60)); // String name, int style, int size
 
       g.drawLine(GAME_WIDTH / 2, 0, GAME_WIDTH / 2, GAME_HEIGHT);// Ω√¿€ ¡° ∫Œ≈Õ ≥°¡° ¡¬«•¿ŒµÌ
-      
-      g.drawString(String.valueOf(score1 / 10) + String.valueOf(score1 % 10),
+      // ºˆ¡§« ø‰
+      g.drawString(String.valueOf(game.player1Score / 10) + String.valueOf(game.player1Score % 10),
             GAME_WIDTH / 2 - 85, 50);
-      g.drawString(String.valueOf(score2 / 10) + String.valueOf(score2 % 10),
+      g.drawString(String.valueOf(game.player2Score / 10) + String.valueOf(game.player2Score % 10),
             GAME_WIDTH / 2 + 20, 50);
    }
 
