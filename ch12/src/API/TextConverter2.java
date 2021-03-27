@@ -1,4 +1,4 @@
-package ch12;
+package API;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
