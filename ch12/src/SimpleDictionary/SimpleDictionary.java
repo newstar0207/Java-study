@@ -39,8 +39,9 @@ public class SimpleDictionary extends JPanel implements ActionListener{
 		this.add(addBtn);
 		addBtn.addActionListener(this);
 		this.setSize(new Dimension(600, 50));
-		
 		// searchBtn, addBtn 의 클릭이벤트가 발생했을때 처리할 리스너를 지정
+		// 파일에 key=value 형태로 저장된 엔트리들을 읽어서, dict 를 구성함
+		
 		
 	}
 	
@@ -60,6 +61,7 @@ public class SimpleDictionary extends JPanel implements ActionListener{
 				return;
 			}
 			dict.put(key, value);
+			// 파일에 key = value 의 쌍으로 기록해둠.
 			JOptionPane.showMessageDialog(this, "단어 추가 완료.", key, JOptionPane.INFORMATION_MESSAGE);
 		}else if(e.getSource() == searchBtn) {
 			/*
@@ -83,7 +85,7 @@ public class SimpleDictionary extends JPanel implements ActionListener{
 						);
 			}
 		}
-		inputField.setText("");
+//		inputField.setText("");
 	}
 	
 	public static void main(String[] args) {
