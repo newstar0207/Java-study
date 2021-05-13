@@ -18,17 +18,14 @@ import javax.swing.JTextField;
 
 public class SimpleDictionary extends JPanel implements ActionListener {
 	/*
-	 * 
 	 * 단어 입력 받을 수 있는 JTextField 검색버튼 추가버튼 단어장 구현을 위한 자료구조로 Map객체 사용
-	 * 
 	 */
 	private JTextField inputField = new JTextField(30);
 	private JButton searchBtn = new JButton("검색");
 	private JButton addBtn = new JButton("추가");
+	private static final String dirverClassName = "org.gjt.mm.mysql.Driver";
 	/*
-	 * 
 	 * Map 객체를 단어장 구현으로 사용 <key, value> 쌍으로 저장. key 는 한글 ,value 는 대응되는 영어단어.
-	 * 
 	 */
 	private Map<String, String> dict = new HashMap<>();
 	private static final String DIC_FILE_NAME = "dict.props";
@@ -42,7 +39,21 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 		this.setSize(new Dimension(600, 50));
 		// searchBtn, addBtn 의 클릭이벤트가 발생했을때 처리할 리스너를 지정
 		// 파일에 key=value 형태로 저장된 엔트리들을 읽어서, dict 를 구성함
+		
 		buildDictionaryFromFile();
+		
+		// DB에서 레코드를 읽고 , 그 레코드들을 이용해 구성
+		buildDictionaryFromDB();
+	}
+	private void buildDictionaryFromDB() {
+		/*
+		 * 1. Data base 연결 
+		 * 		1. JDBC 드라이버 로딩. Class.forName("org.gjt.mm.mysql.Driver");
+		 * 2. SELECT 문 수행
+		 * 3. SELECT 문의 수행으로 반환된 레코드들을 이용해
+		 * dict Map 객체를 구성
+		 * 4. Database연결 해제.
+		*/ 
 	}
 
 	private void buildDictionaryFromFile() {
@@ -81,7 +92,10 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 			}
 			dict.put(key, value);
 			// 파일에 key = value 의 쌍으로 기록해둠.
+			// DB에 key = value 의 쌍을 하나의 레코드로 저장
+			
 			addWordToFile(key, value);
+			addToDB(key, value);
 			JOptionPane.showMessageDialog(this, "단어 추가 완료.", key, JOptionPane.INFORMATION_MESSAGE);
 		} else if (e.getSource() == searchBtn) {
 			/*
@@ -103,10 +117,14 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 		}
 //		inputField.setText("");
 	}
+	
+	private void addToDB(String key, String value) {
+		
+	}
 
 	private void addWordToFile(String key, String value) {
 		try (FileWriter fWriter = new FileWriter(DIC_FILE_NAME, true);) {
-			fWriter.write(key + "=" + value + "\n");
+			fWriter.write("\n" + key + "=" + value);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
