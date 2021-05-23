@@ -29,8 +29,8 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 	private JButton addBtn = new JButton("추가");
 	private static final String dirverClassName = "com.mysql.cj.jdbc.Driver";
 	private static final String DB_SERVER_URL = "jdbc:mysql://localhost:3306/dictionary";
-	private static final String DB_USER = "root";
-	private static final String DB_USER_PW= "newstar0207";
+	private static final String DB_USER = "";
+	private static final String DB_USER_PW= "";
 	/*
 	 * Map 객체를 단어장 구현으로 사용 <key, value> 쌍으로 저장. key 는 한글 ,value 는 대응되는 영어단어.
 	 */
