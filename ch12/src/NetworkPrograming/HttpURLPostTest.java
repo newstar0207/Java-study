@@ -1,5 +1,8 @@
 package NetworkPrograming;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -9,7 +12,7 @@ import java.net.URL;
 public class HttpURLPostTest {
 	
 	public static void main(String[] args) throws Exception{
-		String site = "http://localhost:80/test";
+		String site = "http://localhost:9090/todos";
 		URL url = new URL(site);
 		
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -18,12 +21,22 @@ public class HttpURLPostTest {
 		con.setRequestProperty("content-type", "application/x-www-form-urlencoded"); // 헤더정보
 		
 		// id = id, pw = 11
-		
+		String data = "id=newstar&pw=1111";
 		OutputStream stream = con.getOutputStream();
 		OutputStreamWriter owriter = new OutputStreamWriter(stream, "UTF-8");
-		PrintWriter writer = new PrintWriter(owriter);
-		writer.println("id=dd&pw=dd");
+		PrintWriter writer = new PrintWriter(owriter); //println 를 사용할 수 있음
+		writer.println(data);
+		writer.flush();
 		
+		InputStream rstream = con.getInputStream();
+		InputStreamReader streamReader = new InputStreamReader(rstream);
+		
+		BufferedReader reader = new BufferedReader(streamReader);
+		String line;
+		while((line = reader.readLine()) != null) {
+			System.out.println(line);
+		}
+		System.out.println();
 		
 	}
 }
