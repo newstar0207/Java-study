@@ -9,8 +9,8 @@ import java.util.Set;
 
 public class MapTest {
 	public static void main(String[] args1) {
-//		test1();
-		test2();
+		test1();
+//		test2();
 	}
 	
 	public static void test2() {
@@ -42,15 +42,15 @@ public class MapTest {
 		// Map 에 <학번, 학생객체 > 의 형태로 저장함
 		//
 
-		Map<String, Student> map = new HashMap<>();
+		Map<String, Student3> map = new HashMap<>();
 
-		map.put("2000101", new Student(2000101, "kimsaebeoul"));
-		map.put("2000102", new Student(2000102, "kimsaeou"));
-		map.put("2000103", new Student(2000103, "kimsaeb"));
-		map.put("2000104", new Student(2000104, "kimoul"));
-		map.put("2000105", new Student(2000105, "aebeoul"));
+		map.put("2000101", new Student3(2000101, "kimsaebeoul"));
+		map.put("2000102", new Student3(2000102, "kimsaeou"));
+		map.put("2000103", new Student3(2000103, "kimsaeb"));
+		map.put("2000104", new Student3(2000104, "kimoul"));
+		map.put("2000105", new Student3(2000105, "aebeoul"));
 		// 같은 값으로 put 할 시 덮어씀
-		Student value = map.get("2000101"); // 객체를 줌
+		Student3 value = map.get("2000101"); // 객체를 줌
 //		System.out.println(value.getName());
 		
 
@@ -64,7 +64,7 @@ public class MapTest {
 //		Iterator<String> iter = keyset.iterator();
 //		while (iter.hasNext()) {
 //			String key = iter.next();
-//			Student val = map.get(key);
+//			Student3 val = map.get(key);
 //			System.out.println(key + "  " + val);
 //		}
 //		System.out.println("---------------");
@@ -76,18 +76,18 @@ public class MapTest {
 		//2
 //		System.out.println(map.entrySet());
 		//set 도 generic 이며 set이 entry 타입으로 반환하는데 entry 는 generic <l,t>이다
-		Set<Entry<String, Student>> entryset = map.entrySet();
-		// Set의 원소타입이 Entry이며 Entry 는 String Student 로 구성
+		Set<Entry<String, Student3>> entryset = map.entrySet();
+		// Set의 원소타입이 Entry이며 Entry 는 String Student3 로 구성
 //		System.out.println(entryset.size());
 		
-		Iterator<Entry<String, Student>> iter2 = entryset.iterator();
+		Iterator<Entry<String, Student3>> iter2 = entryset.iterator();
 		while(iter2.hasNext()) {
-			Entry<String, Student> entryObj = iter2.next();
+			Entry<String, Student3> entryObj = iter2.next();
 //			System.out.print(iter2.next() + " ");
 			String key = entryObj.getKey();
-			Student val = entryObj.getValue();
+			Student3 val = entryObj.getValue();
 			System.out.println(key + "  " + val);
-			// return 시 Entry<String, Student> 값을 반환
+			// return 시 Entry<String, Student3> 값을 반환
 		}
 		
 		
@@ -97,11 +97,11 @@ public class MapTest {
 	}
 }
 
-class Student {
+class Student3 {
 	private int hakbun;
 	private String name;
 
-	public Student(int hakbun, String name) {
+	public Student3(int hakbun, String name) {
 		super();
 		this.hakbun = hakbun;
 		this.name = name;
@@ -125,7 +125,7 @@ class Student {
 
 	@Override
 	public String toString() {
-		return "Student [hakbun=" + hakbun + ", name=" + name + "]";
+		return "Student3 [hakbun=" + hakbun + ", name=" + name + "]";
 	}
 
 }

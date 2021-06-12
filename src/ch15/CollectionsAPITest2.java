@@ -1,10 +1,10 @@
 package ch15;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
 
 public class CollectionsAPITest2 {
 	public static void main(String[] args) {
@@ -16,9 +16,19 @@ public class CollectionsAPITest2 {
 		// 1. 무작위 정수를 저장한 리스트에 대한 이진탐색 // 잘못된 방법
 		// 2. 정렬된 리스트에 대해 이진탐색 
 		List<Integer> list3 = new ArrayList<>();
-		for(int i = 0; i < 20; i++) {
-			list3.add((int)(Math.random() * 100 + 1));
+		Set<Integer> set = new HashSet<>();
+//		for(int i = 0; i < 20; i++) {
+//			list3.add((int)(Math.random() * 100 + 1));
+			
+//			set.add((int)(Math.random() * 100 + 1));
+//		}
+		while(set.size() <= 20) {
+			set.add((int)(Math.random() * 100 + 1));
 		}
+		for(Integer value : list3) {
+			list3.add(value);
+		}
+		
 		Collections.sort(list3);
 		System.out.println(list3);
 		int idx = Collections.binarySearch(list3, 1);

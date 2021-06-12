@@ -13,7 +13,7 @@ public class StackTest2 {
 		
 		//String str, String delim
 		StringTokenizer st = new StringTokenizer(str, ", ");
-//		String s = st.nextToken();
+		System.out.println(st.nextToken());
 		
 		System.out.println(st.countTokens());
 		

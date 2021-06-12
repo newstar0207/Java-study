@@ -18,11 +18,11 @@ public class SetTest2 {
 	private static void test1() {
 		File file = new File("wordbook.txt"); 
 		Set<String> set = new HashSet<>();
-//		if (file.exists() == true) {
-//			System.out.println("hi~ " + file.getAbsolutePath());
-//		}else {
-//			System.out.println("bye~" + file.getAbsolutePath());
-//		}
+		if (file.exists() == true) {
+			System.out.println("hi~ " + file.getAbsolutePath());
+		}else {
+			System.out.println("bye~" + file.getAbsolutePath());
+		}
 
 		// 파일 내용 읽기
 		// 파일에 읽고 쓰려면 stream 객체를 이용해야 함

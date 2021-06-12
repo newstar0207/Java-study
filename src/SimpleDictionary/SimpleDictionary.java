@@ -1,3 +1,4 @@
+
 package SimpleDictionary;
 
 import java.awt.Dimension;
@@ -29,8 +30,9 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 	private JButton addBtn = new JButton("추가");
 	private static final String dirverClassName = "com.mysql.cj.jdbc.Driver";
 	private static final String DB_SERVER_URL = "jdbc:mysql://localhost:3306/dictionary";
-	private static final String DB_USER = "";
-	private static final String DB_USER_PW= "";
+	private static final String DB_USER = "root";
+	private static final String DB_USER_PW= "newstar0207";
+
 	/*
 	 * Map 객체를 단어장 구현으로 사용 <key, value> 쌍으로 저장. key 는 한글 ,value 는 대응되는 영어단어.
 	 */
@@ -66,12 +68,14 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 		 * 
 		 * 2. Connection 객체를 통해 SQL문 실행을 서버에 요청하고 그 결과를 받아 처리함
 		 * 		a. con.createStatement() 메소드 호출을 통해 반환되는 Statement 객체를 이용 ( 정적 SQL 문)
-		 * 			정적SQL문 : 프로그래밍 시점에 실행할 SQL문이 결정되고 고정된 경우.
-		 * 			ex ) select *  from dict;
+		 * 			정적SQL문 : 프로그래밍 시점에 실행할 SQL문이 결정되고 고정된 경우. // 주로 안씀( 보안상의 문제가 있음)
+		 * 			ex ) select *  from dict; 
+		 * 
 		 * 		b. con.prepareStatement() 메서드 호출을 통해 반환되는 PreparedStatement 객체를 이용 ( 동적 SQL 문)
 		 * 			동적SQL문 : 프로그래밍 시점에 실행할 SQL문이 결정되지않고 변경되는 SQL문
 		 * 			ex ) select * from dict where han = ?
-		 * 		* 주로 b 를 사용함!!
+		 * 
+		 * 		* 주로 b 를 사용함!! (a 안씀)
 		 *      * String sql = "select * from dict";
 		 *      * PreparedStatement pstmt = con.prepareStatement(sql)
 		 * * 실행 준비가 된 Preparedstatement 를 실행시키는 방법 
@@ -92,7 +96,7 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 			System.out.println(e.getMessage());
 			return;
 		}
-
+		
 		//DB 서버에 연결
 		//DB 마다 서버 URL 포맷이 다름
 //			DriverManager.getConnection(DB_server_url, DB_user,DB_user_ password)
@@ -101,7 +105,7 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 					
 			//SELECT 문 실행
 			String sql = "select * from dict";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			PreparedStatement pstmt = con.prepareStatement(sql); // 순서로 꼭 서야함
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -190,23 +194,37 @@ public class SimpleDictionary extends JPanel implements ActionListener {
 		}
 //		inputField.setText("");
 	}
-
+	
+	// -----------------------------------------------
+// 외운단어, 내 단어장 안에서 문제제출등...
+	// -----------------------------------------------
+	
 	private void addToDB(String key, String value) {
 		/*
 		 * 1. 드라이버 클래스는 딱 한번만 메모리에 적재하면 됨. (우리는 생성자에서 적재됨)
 		 * 2. 데이터베이스에 연결
 		 * 3. SQL 문 실행
+		 * 		1. Connection 객체에게 실행할 SQL 문을 실행준비 요청하고 con.prepareStatement(sql);
+		 * 		  PreparedStatement 객체가 반환됨
+		 * 		2. PreparedStatement 객체에게 서버에게 실행요청을 보냄
+		 * 			PreparedStatement.executeUpdate() -> 실행할 SQL 문이 insert, delete, update
+		 * 			preparedStatement.executeQuery() -> 실행할 SQL 문이 select 문일 경우
 		 * 4. 데이터베이스 연결 및 해제
+		 * 		1. con.close();
 		 */
 		try (Connection con = DriverManager.getConnection(DB_SERVER_URL, DB_USER, DB_USER_PW)){
+			// ? (place holder) 자리에 값을 채운 후, 서버에게 실행준비된 SQL 문을 실행하라고 요청해야함.
+			// 실행 직전에 ? 자리에 값을 설정하고, 실행 요청을 보냄
 			String sql = "INSERT INTO dict VALUES(? , ?)";
+			
+			// SQL 문을 DB 서버로 보내서 실행준비를 시킴
 			PreparedStatement pstmt = con.prepareStatement(sql); // 서버에게 날아가 검사를 함 (이때 ? 자리는 비워둠)
 			
-			// ?자리에 값을 채운 후, 서버에게 실행준비된 SQL 문을 실행하라고 요청해야함.
-			pstmt.setString(1, key);
-			pstmt.setString(2, value);
+			pstmt.setString(1, key); // ? 자리의 값
+			pstmt.setString(2, value); // ? 자리의 값
 			
-			
+			// executeUpdate 는 실행후 , 정수의 값을 반환한다
+			// 그 정수 값은 insert, delete, update 문의 수행으로 변경된 레코드의 수.
 			pstmt.executeUpdate(); // 실행요청
 			
 		}catch(Exception e) {
