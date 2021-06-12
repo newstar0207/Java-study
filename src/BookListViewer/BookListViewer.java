@@ -1,13 +1,15 @@
 package BookListViewer;
 
 import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -117,7 +119,7 @@ public class BookListViewer extends JFrame implements ActionListener {
 				setCurrentBookInfoToTextField();
 
 			} else if (e.getSource() == insertBtn) {
-
+				insertToDBForBookInfo();
 			} else if (e.getSource() == finishBtn) {
 				con.close();
 				System.out.println("프로그램 종료");
@@ -126,6 +128,31 @@ public class BookListViewer extends JFrame implements ActionListener {
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
+	}
+	// book_id, title, publisher, year, price
+	private void insertToDBForBookInfo() throws Exception{
+		String title = titleField.getText();
+		String publisher = publisherField.getText();
+		String Stringyear = yearField.getText();
+		Date year = Date.valueOf(Stringyear);
+		int price = Integer.parseInt(priceField.getText());
+		
+		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/oop", "root", "newstar0207");
+		String sql = "insert into books (title, publisher, year, price) values (?,?,?,?)";
+		PreparedStatement pstmt = con.prepareStatement(sql); 
+		
+		// 숫자는 열의 위치가 아닌 ?의 위치이기 때문에 2,3,4,5 (열) 이 아닌 , 1,2,3,4 로 써야함
+		pstmt.setString(1, title); 
+		pstmt.setString(2, publisher);
+		pstmt.setDate(3, year);
+		pstmt.setInt(4, price);
+		
+		
+		// update , delete, insert 경우 사용 
+		pstmt.executeUpdate();
+		con.close();
+		System.out.println("insert 되었습니다");
+		
 	}
 
 	public static void main(String[] args) {
